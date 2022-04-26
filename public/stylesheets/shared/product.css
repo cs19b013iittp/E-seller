@@ -1,0 +1,25 @@
+:root{
+    --product-cover-width: 200px;
+    --product-cover-width-large: 325px;
+    --product-cover-aspect-ratio: 0.75;
+}
+
+.product-cover{
+    width: var(--product-cover-width);
+    height: calc(var(--product-cover-width) / var(--product-cover-aspect-ratio));
+}
+
+.product-cover-large{
+    --product-cover-width : var(--product-cover-width-large);
+}
+
+.product-grid{
+    display: grid;
+    justify-content: center;
+    grid-gap: 2rem;
+    grid-template-columns: repeat(auto-fill,var(--product-cover-width));
+}
+
+.product-grid-large{
+    grid-template-columns: repeat(auto-fill,var(--product-cover-width-large));
+}

@@ -1,0 +1,13 @@
+<div>
+    <%if(products !== undefined && products !== []) products.forEach(product =>{ %>
+        <div class="item row" >
+            <%= product.name %>
+            &nbsp&nbsp&nbsp&nbsp&nbsp
+            <%= product.quantity %>
+        </div>
+        <br>
+    <% }) %>
+</div>
+<form action="/customer/cart" method="POST">
+    <button class="btn btn-primary" type="submit"> Buy </button>
+</form>

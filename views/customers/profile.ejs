@@ -1,0 +1,26 @@
+<div>
+    <div class="form-row">
+        <label class="form-item"> Name : </label>
+        <label class="form-item"> <%= name %> </label>
+    </div>
+    <div class="form-row">
+        <label class="form-item"> Date of birth : </label>
+        <label class="form-item"> <%= dob %> </label>
+    </div>
+    <div class="form-row">
+        <label class="form-item"> Address : </label>
+        <label class="form-item"> <%= address %> </label>
+    </div>
+    <div class="form-row">
+        <label class="form-item"> Email : </label>
+        <label class="form-item"> <%= mail %> </label>
+    </div>
+    <div class="form-row">
+        <label class="form-item"> Phone : </label>
+        <label class="form-item"> <%= phone %> </label>
+    </div>
+</div>
+
+<form action="/logout?_method=DELETE" method="POST">
+    <button class="btn btn-danger" type="submit">Logout</button>
+</form>

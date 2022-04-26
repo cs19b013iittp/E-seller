@@ -1,1 +1,17 @@
-All authers
+<form action="/seller" method="GET">
+    <%- include('../products/search') %> 
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+<br>
+<br>
+<br>
+<div class="form-row">
+    <%if(products !== undefined && products !== []) products.forEach(product =>{ %>
+        <div class="form-item">
+            <a href="product/<%= product.productId %>">
+            <img width="100" height="150"   src="<%= product.coverImagepath %> ">
+            </a>
+            <%=product.name%>
+        </div>
+    <% }) %>
+</div>

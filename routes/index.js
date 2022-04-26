@@ -2,48 +2,57 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const users = []
+const db = require('../models/dataBase.js')
+//import {sellerInsert} from '../models/dataBase.js'
 const passport = require('passport')
 const methodoverride = require('method-override')
 const initializePassport = require('../passport-config.js')
 initializePassport(
-    passport,
-    email=>users.find(user => user.email === email),
-    id=>users.find(user => user.id === id)
+    passport
 )
 
 router.get('/',checkauthenticated,(req,res)=>{
-    res.render('index', {val: req.user.seller})
+    res.render('index', {seller: req.user.seller})
 })
 
-router.get('/login',checknotauthenticated,(req,res)=>{
-    res.render('login.ejs')
+router.get('/loginSeller',checknotauthenticated,(req,res)=>{
+    res.render('loginseller.ejs',{seller:"on"})
   })
 
-router.post('/login',checknotauthenticated, passport.authenticate('local',{
+router.post('/loginSeller',checknotauthenticated, passport.authenticate('local-seller',{
     successRedirect:'/',
-    failureRedirect:'/login',
+    failureRedirect:'/loginSeller',
+    failureFlash:true
+}))
+
+router.get('/loginCustomer',checknotauthenticated,(req,res)=>{
+    res.render('logincustomer.ejs',{seller:"off"})
+  })
+
+router.post('/loginCustomer',checknotauthenticated, passport.authenticate('local-customer',{
+    successRedirect:'/',
+    failureRedirect:'/loginCustomer',
     failureFlash:true
 }))
 
 router.get('/register',checknotauthenticated,(req,res)=>{
-    res.render('register.ejs')
+    res.render('register.ejs',{seller:"on"})
 })
 
 router.post('/register',checknotauthenticated,async(req,res)=>{
     try{
         const hashedpassword = await bcrypt.hash(req.body.password ,10)
-        console.log(typeof(req.body.seller))
-        users.push({
-            id:Date.now().toString(),
-            name:req.body.name,
-            email:req.body.email,
-            password:hashedpassword,
-            dob:req.body.dob,
-            address:req.body.address,
-            phone:req.body.phone,
-            seller:req.body.seller
-        })
-        res.redirect('/login')
+        if(req.body.seller==="Seller")
+        {
+            db.sellerInsert(req.body.name,req.body.email,hashedpassword,req.body.dob,req.body.phone,req.body.address)
+            res.redirect('/loginSeller')
+        }
+        else if(req.body.seller==="Customer")
+        {
+            db.customerInsert(req.body.name,req.body.email,hashedpassword,req.body.dob,req.body.phone,req.body.address)
+            res.redirect('/loginCustomer')
+        }
+        
     }
     catch{
         res.redirect('/register')
@@ -52,7 +61,7 @@ router.post('/register',checknotauthenticated,async(req,res)=>{
   
 router.delete('/logout',(req,res)=>{
     req.logOut()
-    res.redirect('/login')
+    res.redirect('/loginCustomer')
 })
 
 function checkauthenticated(req,res,next){
@@ -61,7 +70,7 @@ function checkauthenticated(req,res,next){
         return next()
     }
 
-    res.redirect('/login')
+    res.redirect('/loginCustomer')
 }
 
 function checknotauthenticated(req,res,next){

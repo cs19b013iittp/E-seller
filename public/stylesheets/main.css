@@ -1,5 +1,8 @@
 @import 'shared/variables.css';
 @import 'shared/header.css';
+@import 'shared/buttons.css';
+@import 'shared/form.css';
+@import 'shared/product.css';
 
 :root {
     font-size: large;
@@ -22,4 +25,20 @@ body{
 
 .inner-container{
     margin: 0 2rem;
+}
+
+img{
+    border-radius: 0.5rem;
+}
+
+.row{
+    border: 1px solid;
+    padding: 1rem;
+    border-radius: 1rem;
+    width: 20rem;
+}
+
+.pages-header{
+    font-size: 2rem;
+    font-weight: 500;
 }

@@ -1,0 +1,41 @@
+<div class="form-row">
+    <div class="form-item">
+        <img width="100" height="150"  src="<%= product.coverImagepath %> ">
+        <br>
+        <% if(seller !=="on") { %> 
+        <form  action="/product/<%= product.productId %> " method="POST">
+            <div class="form-row">
+                <input type="number" value="1" name="count" style="padding-right: 1rem;margin-right: 1rem;margin-top: 0.25rem;">
+                <button class="btn btn-primary" type="submit">Add to cart</button>
+            </div>
+            
+        </form>
+        <% } %> 
+    </div>
+    <div class="form-item">
+        <div class="form-row">
+            <label class="form-item"> Name : </label>
+            <label class="form-item"> <%= product.name %> </label>
+        </div>
+        <div class="form-row">
+            <label class="form-item"> Type : </label>
+            <label class="form-item"> <%= product.type %> </label>
+        </div>
+        <div class="form-row">
+            <label class="form-item"> Cost : </label>
+            <label class="form-item"> <%= product.cost %> </label>
+        </div>
+        <div class="form-row">
+            <label class="form-item"> Size : </label>
+            <label class="form-item"> <%= product.size %> </label>
+        </div>
+        <div class="form-row">
+            <label class="form-item"> Rating : </label>
+            <label class="form-item"> <%= product.rating %> </label>
+        </div>
+        <div class="form-row">
+            <label class="form-item"> Description : </label>
+            <label class="form-item"> <%= product.description %> </label>
+        </div>
+    </div>    
+</div>
