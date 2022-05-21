@@ -1,0 +1,25 @@
+<div>
+    <%function groupBy(objectArray, property) {
+        return objectArray.reduce((acc, obj) => {
+           const key = obj[property];
+           if (!acc[key]) {
+              acc[key] = [];
+           }
+           // Add object to list for given key's value
+           acc[key].push(obj);
+           return acc;
+        }, {});
+     }
+        if(orders !== undefined && orders !== []) {list=groupBy(orders,'ordertime');for( [key, value] of Object.entries(list)){console.log(key); %>
+        <div class="item row" >
+                <% value.forEach(product =>{ console.log(product)%>
+                    <%= product.name %>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                    <%= product.quantity %>
+                    <br>
+                <%})%>
+            
+        </div>
+        <br>
+    <% }} %>
+</div>

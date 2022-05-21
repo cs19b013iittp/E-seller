@@ -29,6 +29,14 @@ router.get('/',checkauthenticated,(req,res)=>{
     })
 })
 
+router.get('/orders',checkauthenticated,(req,res)=>{
+    db.con.query(" select * from Orders inner join Products on Products.productid = Orders.productid where customerid = '"+req.user.customerID+"'",async(err,result)=>{
+        res.render('customers/orders',{seller:"off",
+                                        orders:result                                
+        })
+    })
+})
+
 router.get('/profile',checkauthenticated,(req,res)=>{
     db.con.query("select * from Customers where mail = '"+req.user.mail+"'",async(err,result)=>{
         res.render('customers/profile',{  seller : "off",
@@ -44,13 +52,27 @@ router.get('/profile',checkauthenticated,(req,res)=>{
 //new customers
 router.get('/cart',checkauthenticated,(req,res)=>{
     db.con.query("select * from cart as c join Products as p on c.productId=p.productId where customerId = '"+req.user.customerID+"' ",(err,result)=>{
-        console.log(result)
         res.render('customers/cart',{
                                 products:result,
                                 seller : "off"
                             })
     })
     
+})
+
+router.post('/cart',checkauthenticated,(req,res)=>{
+    db.con.query("select * from cart as c join Products as p on c.productId=p.productId where customerId = '"+req.user.customerID+"' ",(err,result)=>{
+        let current = new Date();
+    let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
+    let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
+    let dateTime = cDate + ' ' + cTime;
+        for(var i =0;i<result.length;i++)
+        {
+            db.salesInsert(req.user.customerID,result[i].productId,result[i].quantity,dateTime)
+        }
+    })
+    db.con.query("COMMIT",async (err,result)=>{});
+    res.redirect('/customer')
 })
 
 module.exports = router

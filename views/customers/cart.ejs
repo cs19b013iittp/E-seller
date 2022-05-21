@@ -8,6 +8,12 @@
         <br>
     <% }) %>
 </div>
+<p>
+    The above products will cost you <% var ans=0; products.forEach(product =>{
+        ans+=product.quantity*product.cost;
+    }) %> 
+    <%= ans %> 
+</p>
 <form action="/customer/cart" method="POST">
     <button class="btn btn-primary" type="submit"> Buy </button>
 </form>

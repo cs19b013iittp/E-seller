@@ -16,6 +16,7 @@ router.get('/:id/view',(req,res)=>{
 router.post('/:id',async(req,res)=>{
     // res.send("id : "+req.params.id+"count "+req.body.count)
     db.cartInsert(req.user.customerID,req.params.id,req.body.count)
+    db.con.query("COMMIT",async (err,result)=>{});
     res.redirect('/customer/cart')
 })
 

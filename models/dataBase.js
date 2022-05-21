@@ -10,6 +10,7 @@ var mysql = require('mysql');
   con = mysql.createConnection(db_config);
 
   con.query("use bari6b71rrwpyfiae707")
+  con.query("SET autocommit = 0");
 //  Insert Functions
    function sellerInsert(name,mail,password,dob,phone,address){
      sqlInsert = "INSERT INTO Sellers (name,password,dob,phone ,mail,address,seller) VALUES (?,?,?,? ,?,?,?)"
@@ -56,8 +57,15 @@ var mysql = require('mysql');
       console.log("success product",res)
     })
   }
-   function salesInsert(customerid,productid,quantity){
-    sqlInsert = "INSERT INTO sellerProduct (customerid,productid,quantity) VALUES (?,?,?)"
+   function salesInsert(customerid,productid,quantity,date){
+    sqlInsert = "INSERT INTO Orders (customerid,productid,quantity,ordertime) VALUES (?,?,?,?)"
+    con.query(sqlInsert,[customerid,productid,quantity,date],(err,res)=>{
+      if(err)
+      console.log(err)
+      else
+      console.log("success product",res)
+    })
+    con.query("COMMIT",async (err,result)=>{});
   }
    function cartInsert(customerid,productid,quantity){
      con.query("select * from cart where customerid = '"+customerid+"' and productid = '"+productid+"'",(err,res)=>{
@@ -144,4 +152,4 @@ var mysql = require('mysql');
 
   }
 
-  module.exports = { con,sellerInsert ,customerInsert ,productInsert ,sellerProductInsert  ,inventoryInsert ,cartInsert }
+  module.exports = { con,sellerInsert ,customerInsert ,productInsert ,sellerProductInsert  ,inventoryInsert ,cartInsert ,salesInsert }

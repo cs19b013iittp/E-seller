@@ -45,11 +45,13 @@ router.post('/register',checknotauthenticated,async(req,res)=>{
         if(req.body.seller==="Seller")
         {
             db.sellerInsert(req.body.name,req.body.email,hashedpassword,req.body.dob,req.body.phone,req.body.address)
+            db.con.query("COMMIT",async (err,result)=>{});
             res.redirect('/loginSeller')
         }
         else if(req.body.seller==="Customer")
         {
             db.customerInsert(req.body.name,req.body.email,hashedpassword,req.body.dob,req.body.phone,req.body.address)
+            db.con.query("COMMIT",async (err,result)=>{});
             res.redirect('/loginCustomer')
         }
         

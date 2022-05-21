@@ -3,6 +3,7 @@ const router = express.Router()
 const path = require('path')
 const db = require('../models/dataBase')
 const fs = require('fs')
+const { CLIENT_TRANSACTIONS } = require('mysql/lib/protocol/constants/client')
 const uploadPath = path.join('public','uploads/product')
 const imageMimeTypes = ['image/jpeg','image/png','image/gif']
 // const upload = multer({
@@ -40,6 +41,7 @@ router.get('/',checkauthenticated,(req,res)=>{
 })
 
 router.get('/profile',checkauthenticated, (req,res)=>{
+    db.con.query("START TRANSACTION",async (err,result)=>{});
     db.con.query("select * from Sellers where mail = '"+req.user.mail+"'",async(err,result)=>{
         res.render('sellers/profile',{  seller : "on",
                                         name : result[0].name,
@@ -49,6 +51,7 @@ router.get('/profile',checkauthenticated, (req,res)=>{
                                         phone   : result[0].phone
                                     })
     })
+    db.con.query("COMMIT",async (err,result)=>{});
 })
 
 //new seller
@@ -71,6 +74,7 @@ router.post('/new', async(req,res)=>{
         db.sellerProductInsert(result[0].productId,req.user.sellerID)
         db.inventoryInsert(req.user.sellerID,result[0].productId,req.body.quantity,0)
     });
+    db.con.query("COMMIT",async (err,result)=>{});
     res.redirect('/seller')
 })
 
