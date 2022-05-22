@@ -71,6 +71,11 @@ router.post('/cart',checkauthenticated,(req,res)=>{
             db.salesInsert(req.user.customerID,result[i].productId,result[i].quantity,dateTime)
         }
     })
+    db.con.query("update inventory set quantity_remaing = quantity_remaing - 1 where quantity_remaing > 0;",async (err,result)=>{})
+    db.con.query("COMMIT",async (err,result)=>{});
+    db.con.query("update inventory set quantity_sold = quantity_sold + 1;",async (err,result)=>{})
+    db.con.query("COMMIT",async (err,result)=>{});
+    db.con.query("DELETE FROM cart WHERE customerId = '"+req.user.customerID+"' ",async (err,result)=>{})
     db.con.query("COMMIT",async (err,result)=>{});
     res.redirect('/customer')
 })

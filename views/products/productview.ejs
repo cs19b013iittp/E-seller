@@ -37,5 +37,15 @@
             <label class="form-item"> Description : </label>
             <label class="form-item"> <%= product.description %> </label>
         </div>
+        <% if(seller=="on"){ %> 
+            <div class="form-row">
+                <label class="form-item"> Quantity remaining : </label>
+                <label class="form-item"> <%= product.quantity_remaing %> </label>
+            </div>
+            <div class="form-row">
+                <label class="form-item"> Quantity sold : </label>
+                <label class="form-item"> <%= product.quantity_sold %> </label>
+            </div>
+        <% } %> 
     </div>    
 </div>

@@ -3,10 +3,21 @@ const router = express.Router()
 const db = require('../models/dataBase')
 
 router.get('/:id',checkauthenticated,(req,res)=>{
-    db.con.query("select * from Products where productId = ?",[req.params.id],(err,result)=>{
-        result[0].coverImagepath = `data:${'png'};charset=utf-8;base64,${result[0].img.toString('base64')}`
-        res.render('products/productview',{seller : req.user.seller, product:result[0]})
-    })
+    if(req.user.seller=="on")
+    {
+        db.con.query("select * from Products as p join inventory as i on i.productId=p.productId where p.productId = ?",[req.params.id],(err,result)=>{
+            result[0].coverImagepath = `data:${'png'};charset=utf-8;base64,${result[0].img.toString('base64')}`
+            res.render('products/productview',{seller : req.user.seller, product:result[0]})
+        })
+    }
+    else
+    {
+        db.con.query("select * from Products where productId = ?",[req.params.id],(err,result)=>{
+            result[0].coverImagepath = `data:${'png'};charset=utf-8;base64,${result[0].img.toString('base64')}`
+            res.render('products/productview',{seller : req.user.seller, product:result[0]})
+        })
+    }
+    
 })
 
 router.get('/:id/view',(req,res)=>{
